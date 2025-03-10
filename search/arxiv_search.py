@@ -74,7 +74,9 @@ def search_paper(title, author, max_res=1, output_dir=None):
         res["pdf_url"] = result.pdf_url
         search_results.append(res)
         if output_dir:
-            result.download_pdf(dirpath=output_dir, filename="{}.pdf".format(clean_text(res['title'])))
+            result.download_pdf(
+                dirpath=output_dir, filename="{}.pdf".format(clean_text(res["title"]))
+            )
     return search_results
 
 

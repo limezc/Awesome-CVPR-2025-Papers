@@ -1,6 +1,7 @@
 import os
 import json
 
+
 def generate_markdown_table(papers_search_results):
     title = "# CVPR 2025 Papers"
     table_header = "| Title | Authors | Abstract | PDF URL |\n|-------|---------|----------|---------|\n"
@@ -15,6 +16,7 @@ def generate_markdown_table(papers_search_results):
 
     table_content = title + "\n" + table_header + "\n".join(table_rows)
     return table_content
+
 
 if __name__ == "__main__":
     papers_search_results_file = "output/cvpr_2025_valid_search_results.json"

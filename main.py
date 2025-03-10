@@ -1,40 +1,56 @@
-import requests
-from bs4 import BeautifulSoup
+import os
 import json
+from multiprocessing import Pool
 
+from crawl.crawl_cvpr import crawl_cvpr
+from search.search import Paper, Search
+from tqdm import tqdm
 
-def main(url):
-    response = requests.get(url)
-    papers = []
-    if response.status_code == 200:
-        soup = BeautifulSoup(response.content, 'html.parser')
-        rows = soup.select('tr[style="background-color: #f3f3f3"]')
-        for row in rows:
-            try:
-                first_td = row.find('td')
-                if first_td:
-                    strong_tag = first_td.find('strong')
-                    a_tag = first_td.find('a')
-                    if a_tag:
-                        paper_name = a_tag.get_text(strip=True)
-                        paper_url = a_tag['href']
-                    elif strong_tag:
-                        paper_name = strong_tag.get_text(strip=True)
-                        paper_url = None
-                    author_names = first_td.find('div').find('i').get_text(strip=True)
-                    author_names = [name.strip() for name in author_names.split('·')]
-                    papers.append({"paper_name": paper_name, "paper_url": paper_url, "author_names": author_names})
-            except:
-                print("Error while parsing the row")
-    else:
-        print(f"Failed to retrieve the page. Status code: {response.status_code}")
-    with open("cvpr_2025_papers.json", "w") as f:
-        json.dump(papers, f, indent=4)
-    
-    print("Data saved to cvpr_2025_papers.json. Total papers found: ", len(papers))
-
+def search_paper(paper):
+    paper = Paper(title=paper["paper_name"], authors=paper["author_names"])
+    search = Search(paper)
+    return search.search()
 
 if __name__ == "__main__":
     cvpr_2025_url = "https://cvpr.thecvf.com/Conferences/2025/AcceptedPapers"
-    main(cvpr_2025_url)
+
+    ## collect all papers from CVPR 2025 website
+    save_path = "output/cvpr_2025_papers.json"
+    if os.path.exists(save_path):
+        with open(save_path, "r") as f:
+            papers = json.load(f)
+    else:
+        papers = crawl_cvpr(cvpr_2025_url, save_path)
+
+
+    ## search for each paper
+    save_path = "output/cvpr_2025_search_results.json"
+    # papers = papers[:20]
+    if os.path.exists(save_path):
+        with open(save_path, "r") as f:
+            search_results = json.load(f)
+    else:
+        # with Pool(2) as p:
+        #     search_results = p.map(search_paper, papers)
+
+        search_results = []
+        json_save_dir = "output/cvpr_2025_search_results"
+        os.makedirs(json_save_dir, exist_ok=True)
+        for paper in tqdm(papers, total=len(papers)):
+            search = Search(Paper(title=paper["paper_name"], authors=paper["author_names"]))
+            search_result = search.search()
+            search_results.append(search_result)
+            json.dump(search_result, open(os.path.join(json_save_dir, f"{paper['paper_name']}.json"), "w"), indent=4)
+
+        with open(save_path, "w") as f:
+            json.dump(search_results, f, indent=4)
+    
+    # collect all valid search results
+    valid_search_results = [result for result in search_results if result["valid"]]
+    print(f"Total valid search results: {len(valid_search_results)}")
+    ss = 1
+
+    
+
+
 

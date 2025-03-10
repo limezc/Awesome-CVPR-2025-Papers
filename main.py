@@ -6,7 +6,7 @@ from crawl.crawl_cvpr import crawl_cvpr
 from search.search import Paper, Search
 from tqdm import tqdm
 from format.format_result import generate_markdown_table
-from analysis.extract_github_url import extract_github_url
+from analysis.extract_github_url import extract_urls
 
 
 def search_paper(paper):
@@ -70,13 +70,13 @@ if __name__ == "__main__":
         valid_search_results = [result for result in search_results if result["valid"]]
     print(f"Total valid search results: {len(valid_search_results)}")
 
-    if "github_links" not in valid_search_results[0]:
+    if "links" not in valid_search_results[0]:
         save_pdf_dir = "output/pdf"
         os.makedirs(save_pdf_dir, exist_ok=True)
-        with Pool(10) as p:
-            github_links = p.map(extract_github_url, valid_search_results)
-        for i, github_link in enumerate(github_links):
-            valid_search_results[i]["github_links"] = github_link
+        with Pool(30) as p:
+            links = p.map(extract_urls, valid_search_results)
+        for i, link in enumerate(links):
+            valid_search_results[i]["links"] = link
         json.dump(
             valid_search_results, open(valid_search_results_save_path, "w"), indent=4
         )

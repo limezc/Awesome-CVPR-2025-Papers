@@ -4,7 +4,7 @@ import json
 
 def generate_markdown_table(papers_search_results):
     title_project = "# CVPR 2025 Papers"
-    table_header = "| Title | Authors | Abstract | PDF URL | GitHub Links |\n|-------|---------|----------|---------|--------------|\n"
+    table_header = "| Title | Authors | Abstract | PDF URL | Related Links |\n|-------|---------|----------|---------|--------------|\n"
     table_rows = []
 
     for data in papers_search_results:
@@ -12,8 +12,8 @@ def generate_markdown_table(papers_search_results):
         authors = ", ".join(data["paper_search"]["authors"])
         abstract = data["paper_search"]["abstract"].replace("\n", " ")
         pdf_url = data["paper_search"]["pdf_url"]
-        github_link = f"[GitHub]({data["github_links"][0]})" if len(data["github_links"]) > 0 else "N/A"
-        table_rows.append(f"| {title} | {authors} | {abstract} | [Arxiv]({pdf_url}) | {github_link} |")
+        links = ", ".join([f"[{link}]({link})" for link in data["links"]]) if len(data["links"]) > 0 else "N/A"
+        table_rows.append(f"| {title} | {authors} | {abstract} | [Arxiv]({pdf_url}) | {links} |")
 
     table_content = title_project + "\n" + table_header + "\n".join(table_rows)
     with open("README.md", "w") as f:

@@ -18,6 +18,7 @@ if __name__ == "__main__":
     cvpr_2025_url = "https://cvpr.thecvf.com/Conferences/2025/AcceptedPapers"
 
     ## collect all papers from CVPR 2025 website
+    os.makedirs("output", exist_ok=True)
     save_path = "output/cvpr_2025_papers.json"
     if os.path.exists(save_path):
         with open(save_path, "r") as f:

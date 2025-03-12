@@ -1,9 +1,11 @@
 import os
 import json
+import datetime
 
 
 def generate_markdown_table(papers_search_results):
     title_project = "# CVPR 2025 Papers"
+    update_time = f"Latest update: {datetime.now().strftime('%Y-%m-%d')}"
     table_header = "| Title | Authors | Abstract | PDF URL | Related Links |\n|-------|---------|----------|---------|--------------|\n"
     table_rows = []
 
@@ -15,7 +17,7 @@ def generate_markdown_table(papers_search_results):
         links = ", ".join([f"[{link}]({link})" for link in data["links"]]) if len(data["links"]) > 0 else "N/A"
         table_rows.append(f"| {title} | {authors} | {abstract} | [Arxiv]({pdf_url}) | {links} |")
 
-    table_content = title_project + "\n" + table_header + "\n".join(table_rows)
+    table_content = title_project + "\n" + update_time + "\n" + table_header + "\n".join(table_rows)
     with open("README.md", "w") as f:
         f.write(table_content)
 

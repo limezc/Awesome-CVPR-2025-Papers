@@ -1,6 +1,7 @@
 name: Update
 
 on:
+  workflow_dispatch:
   label:
     types:
       - created # for test
@@ -33,13 +34,22 @@ jobs:
     - name: Commit and push changes
       uses: github-actions-x/commit@v2.9
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+        github-token: ${{ secrets.TOKEN }}
         push-branch: 'main'
         commit-message: '✏️ Update papers automatically.'
         force-add: 'true'
         files: README.md .github/ISSUE_TEMPLATE.md
 
     - name: Create an issue to notify
-      uses: limezc/create-an-issue@v2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{ secrets.TOKEN }}
+        script: |
+          const { data: issue } = await github.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: 'Daily Update Notification',
+            body: 'The papers have been updated successfully.',
+            labels: ['update', 'daily']
+          });
+          console.log(`Created issue ${issue.number}`);

@@ -2,4 +2,5 @@ arxiv
 beautifulsoup4
 black
 pdfplumber
+tqdm
 

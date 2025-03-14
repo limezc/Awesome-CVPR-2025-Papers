@@ -1,6 +1,6 @@
 import os
 import json
-import datetime
+from datetime import datetime
 
 
 def generate_markdown_table(papers_search_results):

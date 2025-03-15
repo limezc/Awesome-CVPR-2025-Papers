@@ -6,7 +6,7 @@ on:
     types:
       - created # for test
   schedule:
-      - cron: '0 19 * * *' # 03:00 Beijing time every day
+      - cron: '0 19 * * 5' # 03:00 Beijing time every day
 
 permissions:
   contents: write
@@ -45,11 +45,11 @@ jobs:
       with:
         github-token: ${{ secrets.TOKEN }}
         script: |
-          const { data: issue } = await github.issues.create({
+          const { data: issue } = await github.rest.issues.create({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            title: 'Daily Update Notification',
+            title: 'Weekly Update Notification',
             body: 'The papers have been updated successfully.',
-            labels: ['update', 'daily']
+            labels: ['update', 'weekly']
           });
           console.log(`Created issue ${issue.number}`);

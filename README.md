@@ -1,4 +1,98 @@
-# CVPR 2025 Papers
+# Awesome CVPR 2025 Papers
+
+🎉 **一个自动化收集和整理 CVPR 2025 论文信息的项目**
+
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/)
+[![CVPR 2025](https://img.shields.io/badge/conference-CVPR%202025-red.svg)](https://cvpr.thecvf.com/Conferences/2025)
+
+## 📖 项目简介
+
+本项目旨在自动化收集、搜索和整理 CVPR 2025 会议的所有接收论文信息。通过爬虫技术从官方网站获取论文列表，并通过多种搜索引擎（包括 arXiv）自动查找每篇论文的详细信息，包括摘要、PDF 链接和相关代码仓库等。
+
+## ✨ 主要功能
+
+- 🕷️ **自动爬取**: 从 CVPR 2025 官方网站自动获取所有接收论文列表
+- 🔍 **智能搜索**: 通过 arXiv 和 Google 搜索引擎自动查找论文详细信息
+- 📄 **信息提取**: 自动提取论文摘要、PDF 链接、作者信息等
+- 🔗 **代码仓库**: 自动识别和提取相关的 GitHub 代码仓库链接
+- 📊 **格式化输出**: 生成结构化的 Markdown 表格，便于浏览和检索
+- 🔄 **增量更新**: 支持增量更新，避免重复搜索已处理的论文
+
+## 🚀 快速开始
+
+### 环境要求
+
+- Python 3.12+
+- 网络连接（用于爬取和搜索）
+
+### 安装依赖
+
+```bash
+pip install -r requirements.txt
+```
+
+### 运行项目
+
+```bash
+python main.py
+```
+
+## 📁 项目结构
+
+```
+├── main.py                 # 主程序入口
+├── requirements.txt        # 依赖包列表
+├── crawl/                  # 爬虫模块
+│   └── crawl_cvpr.py      # CVPR 官网爬虫
+├── search/                 # 搜索模块
+│   ├── arxiv_search.py    # arXiv 搜索
+│   ├── google_search.py   # Google 搜索
+│   └── search.py          # 搜索主逻辑
+├── format/                 # 格式化模块
+│   └── format_result.py   # 结果格式化
+├── analysis/               # 分析模块
+│   └── extract_github_url.py  # GitHub 链接提取
+└── output/                # 输出目录
+    ├── cvpr_2025_papers.json          # 原始论文列表
+    ├── cvpr_2025_search_results.json  # 搜索结果
+    └── cvpr_2025_search_results/      # 详细搜索结果
+```
+
+## 📋 数据格式
+
+项目生成的论文信息包含以下字段：
+
+- **Title**: 论文标题
+- **Authors**: 作者列表
+- **Abstract**: 论文摘要
+- **PDF URL**: 论文 PDF 下载链接
+- **Related Links**: 相关链接（如 GitHub 代码仓库等）
+
+## 🔧 自定义配置
+
+您可以通过修改以下文件来自定义项目行为：
+
+- `main.py`: 调整并发数量、输出路径等
+- `search/search.py`: 修改搜索策略和验证逻辑
+- `crawl/crawl_cvpr.py`: 调整爬虫参数
+
+## 📊 统计信息
+
+当前收录论文数量: **16篇**
+
+*注: 数据会定期更新，以保持与 CVPR 2025 官方信息同步*
+
+## 🤝 贡献
+
+欢迎提交 Issue 和 Pull Request 来改进这个项目！
+
+## 📄 许可证
+
+本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
+
+## 📚 论文列表
+
 | Title | Authors | Abstract | PDF URL | Related Links |
 |-------|---------|----------|---------|--------------|
 | CoMM: A Coherent Interleaved Image-Text Dataset for Multimodal Understanding and Generation | Wei Chen, Lin Li, Yongqi Yang, Bin Wen, Fan Yang, Tingting Gao, Yu Wu, Long Chen | Interleaved image-text generation has emerged as a crucial multimodal task, aiming at creating sequences of interleaved visual and textual content given a query. Despite notable advancements in recent multimodal large language models (MLLMs), generating integrated image-text sequences that exhibit narrative coherence and entity and style consistency remains challenging due to poor training data quality. To address this gap, we introduce CoMM, a high-quality Coherent interleaved image-text MultiModal dataset designed to enhance the coherence, consistency, and alignment of generated multimodal content. Initially, CoMM harnesses raw data from diverse sources, focusing on instructional content and visual storytelling, establishing a foundation for coherent and consistent content. To further refine the data quality, we devise a multi-perspective filter strategy that leverages advanced pre-trained models to ensure the development of sentences, consistency of inserted images, and semantic alignment between them. Various quality evaluation metrics are designed to prove the high quality of the filtered dataset. Meanwhile, extensive few-shot experiments on various downstream tasks demonstrate CoMM's effectiveness in significantly enhancing the in-context learning capabilities of MLLMs. Moreover, we propose four new tasks to evaluate MLLMs' interleaved generation abilities, supported by a comprehensive evaluation framework. We believe CoMM opens a new avenue for advanced MLLMs with superior multimodal in-context learning and understanding ability. | [Arxiv](http://arxiv.org/pdf/2406.10462v2) | [https://github.com/HKUST-LongGroup/CoMM](https://github.com/HKUST-LongGroup/CoMM) |
